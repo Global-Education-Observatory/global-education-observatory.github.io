@@ -4,8 +4,11 @@
     <meta charset="utf-8">
     <title>Open Education Data Commons</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
-  </head>
-  <body>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=globe_location_pin,groups,home,star" />
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=" /></head> -->
+  
+  
+    <body>
     <nav>
   
     <a href="/">Home</a>
@@ -33,33 +36,78 @@
 <!-- Theme Cards -->
 <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
 
-  <a href="oedc/oedc_geospatial.html" 
+  <!-- <a href="oedc/oedc_geospatial.html" 
      class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
-    <h2 class="text-xl font-semibold">Geospatial</h2>
-    <p class="text-gray-600 mt-2">Boundary files, school locations, administrative layers.</p>
-  </a>
+     <div>
+        <span class="material-symbols-outlined">globe_location_pin</span>
+        <div>
+            <h2 class="text-xl font-semibold">Geospatial</h2>
+            <p class="text-gray-600 mt-2">Boundary files, school locations, administrative layers.</p>
+        </div>
+    </div>
+  </a> -->
 
-  <a href="oedc/oedc_personnel.html" 
+    <a href="oedc/oedc_geospatial.html" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition block">
+    <div class="flex items-center gap-4">      <!-- centers icon vertically -->
+        <span class="material-symbols-outlined text-4xl">globe_location_pin</span>
+        <div class="text-left">
+            <h2 class="text-xl font-semibold">Geospatial</h2>
+            <p class="text-gray-600 mt-1">Boundary files, school locations, administrative layers.</p>
+        </div>
+    </div>
+    </a>
+
+    <a href="oedc/oedc_personnel.html" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition block">
+    <div class="flex items-center gap-4">      <!-- centers icon vertically -->
+        <span class="material-symbols-outlined text-4xl">groups</span>
+        <div class="text-left">
+        <h2 class="text-xl font-semibold">Personnel</h2>
+        <p class="text-gray-600 mt-2">Teacher counts, qualifications, pupil-teacher ratios.</p>
+        </div>
+    </div>
+    </a>
+
+    <a href="oedc/oedc_resources.html" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition block">
+    <div class="flex items-center gap-4">      <!-- centers icon vertically -->
+        <span class="material-symbols-outlined text-4xl">home</span>
+        <div class="text-left">
+        <h2 class="text-xl font-semibold">Resources & Infrastructure</h2>
+        <p class="text-gray-600 mt-2">Electricity, classrooms, water, sanitation, infrastructure.</p>
+        </div>
+    </div>
+    </a>
+    
+    <a href="oedc/oedc_outcomes.html" class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition block">
+    <div class="flex items-center gap-4">      <!-- centers icon vertically -->
+        <span class="material-symbols-outlined text-4xl">star</span>
+        <div class="text-left">
+        <h2 class="text-xl font-semibold">Learning Outcomes</h2>
+        <p class="text-gray-600 mt-2">Test scores, dropout, completion rates, transitions.</p>
+        </div>
+    </div>
+    </a>
+
+  <!-- <a href="oedc/oedc_personnel.html" 
      class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
     <h2 class="text-xl font-semibold">Personnel</h2>
     <p class="text-gray-600 mt-2">Teacher counts, qualifications, pupil-teacher ratios.</p>
-  </a>
+  </a> -->
 
-  <a href="oedc/oedc_resources.html" 
+  <!-- <a href="oedc/oedc_resources.html" 
      class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
     <h2 class="text-xl font-semibold">Resources & Infrastructure</h2>
     <p class="text-gray-600 mt-2">Electricity, classrooms, water, sanitation, infrastructure.</p>
-  </a>
+  </a> -->
 
-  <a href="/global-education-observatory/themes/outcomes.html" 
+  <!-- <a href="/global-education-observatory/themes/outcomes.html" 
      class="p-6 bg-white rounded-xl shadow hover:shadow-lg transition">
     <h2 class="text-xl font-semibold">Learning Outcomes</h2>
     <p class="text-gray-600 mt-2">Test scores, dropout, completion rates, transitions.</p>
-  </a>
+  </a> -->
 
-  7 geospatial datasets<br>
-  7 personnel datasets<br>
-  1 infra datasets<br>
+  23 geospatial datasets<br>
+  8 personnel datasets<br>
+  6 infra datasets<br>
   
     
 
@@ -92,15 +140,359 @@ document.addEventListener("DOMContentLoaded", function() {
         
       
         
-          "phi",
+          "blz",
         
       
         
-          "phi",
+          "blz",
+        
+      
+        
+          "blz",
+        
+      
+        
+          "bol",
+        
+      
+        
+          "bol",
+        
+      
+        
+          "bol",
+        
+      
+        
+          "bra",
+        
+      
+        
+          "bra",
+        
+      
+        
+          "bra",
+        
+      
+        
+          "chl",
+        
+      
+        
+          "chl",
+        
+      
+        
+          "chl",
+        
+      
+        
+          "cri",
+        
+      
+        
+          "cri",
+        
+      
+        
+          "cri",
+        
+      
+        
+          "gtm",
+        
+      
+        
+          "gtm",
+        
+      
+        
+          "gtm",
+        
+      
+        
+          "hnd",
+        
+      
+        
+          "hon",
+        
+      
+        
+          "hon",
+        
+      
+        
+          "idn",
+        
+      
+        
+          "idn",
+        
+      
+        
+          "idn",
+        
+      
+        
+          "isr",
+        
+      
+        
+          "isr",
+        
+      
+        
+          "isr",
+        
+      
+        
+          "ken",
+        
+      
+        
+          "ken",
+        
+      
+        
+          "ken",
+        
+      
+        
+          "kgz",
+        
+      
+        
+          "kgz",
+        
+      
+        
+          "kgz",
+        
+      
+        
+          "khm",
+        
+      
+        
+          "khm",
+        
+      
+        
+          "khm",
+        
+      
+        
+          "lao",
+        
+      
+        
+          "lao",
+        
+      
+        
+          "lao",
+        
+      
+        
+          "lby",
+        
+      
+        
+          "lby",
+        
+      
+        
+          "lby",
+        
+      
+        
+          "mex",
+        
+      
+        
+          "mex",
+        
+      
+        
+          "mex",
+        
+      
+        
+          "mus",
+        
+      
+        
+          "mus",
+        
+      
+        
+          "mus",
+        
+      
+        
+          "nig",
+        
+      
+        
+          "nig",
+        
+      
+        
+          "nig",
+        
+      
+        
+          "per",
+        
+      
+        
+          "per",
+        
+      
+        
+          "per",
         
       
         
           "phl",
+        
+      
+        
+          "phl",
+        
+      
+        
+          "phl",
+        
+      
+        
+          "png",
+        
+      
+        
+          "png",
+        
+      
+        
+          "png",
+        
+      
+        
+          "pry",
+        
+      
+        
+          "pry",
+        
+      
+        
+          "pry",
+        
+      
+        
+          "som",
+        
+      
+        
+          "som",
+        
+      
+        
+          "som",
+        
+      
+        
+          "tan",
+        
+      
+        
+          "tan",
+        
+      
+        
+          "tan",
+        
+      
+        
+          "tun",
+        
+      
+        
+          "tun",
+        
+      
+        
+          "tun",
+        
+      
+        
+          "yem",
+        
+      
+        
+          "yem",
+        
+      
+        
+          "yem",
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
         
       
         

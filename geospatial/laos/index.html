@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laos Geospatial</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+  <div class="max-w-5xl mx-auto py-10 px-4">
+    <!-- Title -->
+    <h1 class="text-4xl font-bold mb-4">
+      Laos — Geospatial Data
+    </h1>
+
+    <!-- Description -->
+    <p class="text-gray-700 mb-6">
+      
+    </p>
+
+    <!-- Metadata Table -->
+    <h2 class="text-2xl font-semibold mb-3">Metadata</h2>
+
+    <!-- Download Tiles -->
+    <h2 class="text-2xl font-semibold mb-3">Download Data</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+
+      <!-- GeoJSON -->
+      <a href="/data/geospatial/lao_geo.geojson" class="block p-6 bg-white shadow rounded-xl hover:shadow-lg transition text-center">
+        <i class="fa-solid fa-map text-4xl text-blue-600 mb-2"></i>
+        <div class="text-lg font-semibold">Download GeoJSON</div>
+        <div class="text-sm text-gray-600">Laos geospatial data</div>
+      </a>
+
+      <!-- CSV -->
+      
+      <a href="/data/geospatial/lao_geo.csv" class="block p-6 bg-white shadow rounded-xl hover:shadow-lg transition text-center">
+        <i class="fa-solid fa-table text-4xl text-green-600 mb-2"></i>
+        <div class="text-lg font-semibold">Download CSV</div>
+        <div class="text-sm text-gray-600">Laos CSV data</div>
+      </a>
+      
+    </div>
+
+    <!-- Map -->
+    <h2 class="text-2xl font-semibold mb-3">Preview Map (first 10 points)</h2>
+
+    <div id="map" class="h-96 w-full rounded-xl shadow"></div>
+
+  </div>
+
+  <!-- Map Script -->
+  <script>
+
+    const iso = "lao";
+    const lat = "-35.675147";
+    const lon = "-71.542969";
+    const zoom = "3";
+
+    const map = L.map('map').setView([lat, lon], zoom); // Honduras center approx
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 12,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    L.tileLayer.wms("https://globaleducationobservatory.org/geoserver/geo/wms", {
+      layers: `geo:${iso}`,
+      format: 'image/png',
+      transparent: true,
+      version: '1.1.0',
+      attribution: "Global Education Observatory"
+    }).addTo(map);
+
+    // fetch(`https://globaleducationobservatory.org/geoserver/geo/wms?request=GetCapabilities`)
+    //   .then(r => r.text())
+    //   .then(xml => {
+    //     const parser = new DOMParser();
+    //     const data = parser.parseFromString(xml, "text/xml");
+    //     const layer = data.querySelector(`Layer[Name="geo:${iso}"]`);
+    //     const bbox = layer.querySelector("EX_GeographicBoundingBox");
+    //     const minx = parseFloat(bbox.children[0].textContent);
+    //     const miny = parseFloat(bbox.children[1].textContent);
+    //     const maxx = parseFloat(bbox.children[2].textContent);
+    //     const maxy = parseFloat(bbox.children[3].textContent);
+
+    //     map.fitBounds([[miny, minx], [maxy, maxx]]);
+    //   });
+
+
+
+
+    // // Load GeoJSON
+    // fetch("/data/geospatial/lao_geo.geojson")
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     let features = data.features.slice(0, 10); // first 10 points
+
+    //     L.geoJSON(features, {
+    //       pointToLayer: (feature, latlng) => L.marker(latlng)
+    //     }).addTo(map);
+    //   });
+      
+  </script>
+
+</body>
+</html>

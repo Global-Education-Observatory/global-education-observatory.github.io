@@ -1,23 +1,39 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Personnel Datasets</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Personnel Datasets</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS (your homepage uses Leaflet) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="/assets/css/styles.css">
-  </head>
-  <body>
-    <nav>
-  
-    <a href="/">Home</a>
-  
-    <a href="/about.html">About</a>
-  
-    <a href="/oedc.html">OEDC</a>
-  
-    <a href="/torchsdg.html">torchSDG</a>
-  
-</nav>
-    <div class="max-w-5xl mx-auto py-10">
+
+
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="max-w-6xl mx-auto px-8 py-12">
+
+  <!-- main page content -->
+  <div class="max-w-5xl mx-auto py-10">
 
   <h1 class="text-4xl font-bold mb-6 text-gray-800">Personnel Datasets</h1>
 
@@ -134,6 +150,21 @@
 
       </a>
     
+      <a href="/personnel/tanzania/"
+         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+
+          <!-- Icon -->
+          <div class="flex items-center mb-4">
+            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
+            <h2 class="text-xl font-semibold text-gray-800">Tanzania</h2>
+          </div>
+
+          <p class="text-gray-600 text-sm">
+            Click to view dataset
+          </p>
+
+      </a>
+    
 
   </div>
 </div>
@@ -141,5 +172,10 @@
 <!-- Google Material Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+
+</div>
+
   </body>
+
+</body>
 </html>

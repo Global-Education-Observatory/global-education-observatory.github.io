@@ -1,23 +1,39 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Geospatial Datasets</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Geospatial Datasets</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet CSS (your homepage uses Leaflet) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="/assets/css/styles.css">
-  </head>
-  <body>
-    <nav>
-  
-    <a href="/">Home</a>
-  
-    <a href="/about.html">About</a>
-  
-    <a href="/oedc.html">OEDC</a>
-  
-    <a href="/torchsdg.html">torchSDG</a>
-  
-</nav>
-    <div class="max-w-5xl mx-auto py-10">
+
+
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="max-w-6xl mx-auto px-8 py-12">
+
+  <!-- main page content -->
+  <div class="max-w-5xl mx-auto py-10">
 
   <h1 class="text-4xl font-bold mb-6 text-gray-800">Geospatial Datasets</h1>
 
@@ -26,113 +42,331 @@
   </p>
 
   <!-- Grid of cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+
 
     
-      <a href="/geospatial/bolivia/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/bolivia/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Bolivia</h2>
-          </div>
+<img src="/icons/bolivia.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Bolivia</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Bolivia -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
-      <a href="/geospatial/brazil/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/brazil/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Brazil</h2>
-          </div>
+<img src="/icons/brazil.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Brazil</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Brazil -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
-      <a href="/geospatial/chile/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/cambodia/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Chile</h2>
-          </div>
+<img src="/icons/cambodia.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Cambodia</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Cambodia -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
-      <a href="/geospatial/costa-rica/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/chile/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Costa Rica</h2>
-          </div>
+<img src="/icons/chile.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Chile</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Chile -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
-      <a href="/geospatial/guatemala/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/costa-rica/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Guatemala</h2>
-          </div>
+<img src="/icons/costa-rica.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Costa Rica</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Costa Rica -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
-      <a href="/geospatial/honduras/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/guatemala/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Honduras</h2>
-          </div>
+<img src="/icons/guatemala.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Guatemala</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Guatemala -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
-      <a href="/geospatial/philippines/"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="/geospatial/honduras/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">Philippines</h2>
-          </div>
+<img src="/icons/honduras.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Honduras</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- Honduras -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/indonesia/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/indonesia.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Indonesia</h2>
+
+
+          <!-- Indonesia -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/israel/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/israel.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Israel</h2>
+
+
+          <!-- Israel -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/kenya/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/kenya.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Kenya</h2>
+
+
+          <!-- Kenya -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/kyrgyzstan/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/kyrgyzstan.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Kyrgyzstan</h2>
+
+
+          <!-- Kyrgyzstan -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/laos/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/laos.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Laos</h2>
+
+
+          <!-- Laos -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/libya/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/libya.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Libya</h2>
+
+
+          <!-- Libya -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/mexico/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/mexico.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Mexico</h2>
+
+
+          <!-- Mexico -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/nigeria/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/nigeria.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Nigeria</h2>
+
+
+          <!-- Nigeria -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/paraguay/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/paraguay.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Paraguay</h2>
+
+
+          <!-- Paraguay -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/peru/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/peru.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Peru</h2>
+
+
+          <!-- Peru -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/philippines/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/philippines.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Philippines</h2>
+
+
+          <!-- Philippines -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/png/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/papau-new-guinea.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Papau New Guinea</h2>
+
+
+          <!-- Papau New Guinea -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/somalia/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/somalia.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Somalia</h2>
+
+
+          <!-- Somalia -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/tanzania/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/tanzania.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Tanzania</h2>
+
+
+          <!-- Tanzania -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/tunisia/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/tunisia.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Tunisia</h2>
+
+
+          <!-- Tunisia -->
+        <!-- </h2> -->
+      </div>
+    </a>
+    
+    <a href="/geospatial/yemen/"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
+
+<img src="/icons/yemen.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">Yemen</h2>
+
+
+          <!-- Yemen -->
+        <!-- </h2> -->
+      </div>
+    </a>
     
 
   </div>
@@ -141,5 +375,10 @@
 <!-- Google Material Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+
+</div>
+
   </body>
+
+</body>
 </html>
