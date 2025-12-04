@@ -1,8 +1,8 @@
 ---
 title: "Brazil Geospatial"
 country: "Brazil"
-file: "/global-education-observatory/data/geospatial/bra_geo.geojson"
-csv: "/global-education-observatory/data/geospatial/bra_geo.csv"
+file: "/data/geospatial/bra_geo.geojson"
+csv: "/data/geospatial/bra_geo.csv"
 layout: dataset
 theme: geospatial
 iso: bra

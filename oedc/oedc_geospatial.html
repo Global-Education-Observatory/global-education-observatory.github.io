@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: dataset_list
 title: "Geospatial Datasets"
 ---
 
@@ -12,23 +12,23 @@ title: "Geospatial Datasets"
   </p>
 
   <!-- Grid of cards -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+
 
     {% for item in site.geospatial %}
-      <a href="{{ site.baseurl }}{{ item.url }}"
-         class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+    <a href="{{ site.baseurl }}{{ item.url }}"
+      class="block bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-400 transition p-6">
+      <div class="flex items-center gap-6">   <!-- gap adds space, items-center vertically aligns -->
 
-          <!-- Icon -->
-          <div class="flex items-center mb-4">
-            <span class="material-icons text-blue-600 text-3xl mr-3">public</span>
-            <h2 class="text-xl font-semibold text-gray-800">{{ item.country }}</h2>
-          </div>
+<img src="/icons/{{ item.country | downcase | replace: ' ', '-' }}.png"
+     class="w-14 h-14 opacity-90" />
+<h2 class="text-lg font-semibold">{{ item.country }}</h2>
 
-          <p class="text-gray-600 text-sm">
-            Click to view dataset
-          </p>
 
-      </a>
+          <!-- {{ item.country }} -->
+        <!-- </h2> -->
+      </div>
+    </a>
     {% endfor %}
 
   </div>

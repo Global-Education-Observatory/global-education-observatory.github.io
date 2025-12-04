@@ -4,10 +4,10 @@
 
 # # gem "rails"
 
-# # gem "jekyll", "~> 4.4"
+# gem "jekyll", "~> 4.4"
 
-# gem "github-pages", group: :jekyll_plugins
 
+# on deploy
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3.3"

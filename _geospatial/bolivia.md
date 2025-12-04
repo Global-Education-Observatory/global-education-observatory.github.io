@@ -1,8 +1,8 @@
 ---
 title: "Bolivia Geospatial"
 country: "Bolivia"
-file: "/global-education-observatory/data/geospatial/bol_geo.geojson"
-csv: "/global-education-observatory/data/geospatial/bol_geo.csv"
+file: "/data/geospatial/bol_geo.geojson"
+csv: "/data/geospatial/bol_geo.csv"
 layout: dataset
 theme: geospatial
 iso: bol

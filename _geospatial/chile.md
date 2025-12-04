@@ -1,8 +1,8 @@
 ---
 title: "Chile Geospatial"
 country: "Chile"
-file: "/global-education-observatory/data/geospatial/chl_geo.geojson"
-csv: "/global-education-observatory/data/geospatial/chl_geo.csv"
+file: "/data/geospatial/chl_geo.geojson"
+csv: "/data/geospatial/chl_geo.csv"
 layout: dataset
 theme: geospatial
 iso: chl

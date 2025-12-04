@@ -1,8 +1,8 @@
 ---
 title: "Costa Rica Geospatial"
 country: "Costa Rica"
-file: "/global-education-observatory/data/geospatial/cri_geo.geojson"
-csv: "/global-education-observatory/data/geospatial/cri_geo.csv"
+file: "/data/geospatial/cri_geo.geojson"
+csv: "/data/geospatial/cri_geo.csv"
 layout: dataset
 theme: geospatial
 iso: cri

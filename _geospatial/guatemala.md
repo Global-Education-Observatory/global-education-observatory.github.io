@@ -1,8 +1,8 @@
 ---
 title: "Guatemala Geospatial"
 country: "Guatemala"
-file: "/global-education-observatory/data/geospatial/gtm_geo.geojson"
-csv: "/global-education-observatory/data/geospatial/gtm_geo.csv"
+file: "/data/geospatial/gtm_geo.geojson"
+csv: "/data/geospatial/gtm_geo.csv"
 layout: dataset
 theme: geospatial
 iso:: gtm
