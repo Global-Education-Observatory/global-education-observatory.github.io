@@ -1,0 +1,35 @@
+collections:
+  geospatial:
+    output: true
+    permalink: /geospatial/:name/
+  personnel:
+    output: true
+    permalink: /personnel/:name/    
+  infra:
+    output: true
+    permalink: /resources/:name/    
+    
+
+defaults:
+  - scope:
+      path: ""
+      type: "personnel"
+    values:
+      layout: "dataset_personnel"
+
+  - scope:
+      path: ""
+      type: "geospatial"
+    values:
+      layout: "dataset"
+
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+
+  - scope:
+      path: ""
+      type: "infra"
+    values:
+      layout: "dataset_resources"

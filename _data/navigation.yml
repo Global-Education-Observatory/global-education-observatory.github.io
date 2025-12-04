@@ -1,0 +1,8 @@
+- name: Home
+  link: /
+- name: About
+  link: /about.html  
+- name: OEDC
+  link: /oedc.html
+- name: torchSDG
+  link: /torchsdg.html
