@@ -6,7 +6,7 @@ csv: "/data/geospatial/per_geo.csv"
 layout: dataset
 theme: geospatial
 iso: per
-lat: 12.881959
-lon: 121.766541
+lat: -10.352267217953845
+lon: -75.58725155129177
 zoom: 5
 ---

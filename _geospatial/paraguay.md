@@ -6,7 +6,7 @@ csv: "/data/geospatial/pry_geo.csv"
 layout: dataset
 theme: geospatial
 iso: pry
-lat: 12.881959
-lon: 121.766541
+lat: -23.233329181252152
+lon: -58.36569131254566
 zoom: 5
 ---

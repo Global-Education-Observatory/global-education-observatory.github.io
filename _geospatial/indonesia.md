@@ -6,7 +6,7 @@ csv: "/data/geospatial/idn_geo.csv"
 layout: dataset
 theme: geospatial
 iso: idn
-lat: -35.675147
-lon: -71.542969
-zoom: 3
+lat: -1.700688938764893
+lon: 108.77179013466876
+zoom: 5
 ---

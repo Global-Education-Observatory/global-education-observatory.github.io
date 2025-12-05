@@ -6,6 +6,55 @@
   <title>{{ page.title }}</title>
 </head>
 
+<style>
+.chart-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 25px;
+}
+
+.chart-container canvas {
+    max-width: 300px;   /* adjust down to 200 or up to 300 if needed */
+    max-height: 300px;
+}
+.kpi-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 25px 0;
+}
+
+.kpi-card {
+    background: white;
+    padding: 18px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    min-width: 180px;
+    transition: 0.25s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.kpi-card h3 {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.kpi-card p {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2f4858;
+}
+
+</style>
+
 <body class="bg-gray-50 text-gray-800">
 
 <div class="max-w-6xl mx-auto py-10">
@@ -33,11 +82,55 @@
     <select id="yearSelect" class="border p-2 rounded w-48"></select>
   </div>
 
+<!-- KPI BOXES -->
+<h3>Basic Resources</h3>
+<div id="kpiRow" class="kpi-row">
+    <div class="kpi-card">
+        <h3>Percentage of Schools with Electricity</h3>
+        <p id="kpiPercElec">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Percentage of Schools with Water</h3>
+        <p id="kpiPercWater">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Percentage of Schools with Internet</h3>
+        <p id="kpiPercInt">—</p>
+    </div>
+</div>
+
+<!-- KPI BOXES -->
+<h3>Basic Resources</h3>
+<div id="kpiRow" class="kpi-row">
+    <div class="kpi-card">
+        <h3>Percentage of Schools with Disability Infrastructure</h3>
+        <p id="kpiPercDI">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Percentage of Schools with Sanitation Facilities</h3>
+        <p id="kpiPercSF">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Percentage of Schools with SSF</h3>
+        <p id="kpiPercSSF">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Percentage of Schools with Handwashing Facilities</h3>
+        <p id="kpiPercHF">—</p>
+    </div>
+</div>
+
+
   <!-- KPI cards -->
-  <div id="kpiContainer" class="grid grid-cols-2 md:grid-cols-3 gap-5 mt-8"></div>
+  <!-- <div id="kpiContainer" class="grid grid-cols-2 md:grid-cols-3 gap-5 mt-8"></div> -->
 
   <!-- Table of metadata -->
-  <div class="mt-12">
+  <!-- <div class="mt-12">
     <h2 class="text-xl font-semibold mb-4">Column Metadata</h2>
     <table class="w-full text-sm border">
       <tr class="bg-gray-100">
@@ -51,59 +144,193 @@
       </tr>
       {% endfor %}
     </table>
-  </div>
+  </div> -->
 
 </div>
 
 <script>
-async function load() {
-  const response = await fetch("{{ page.file }}");
-  const text = await response.text();
 
-  const rows = text.split("\n").map(r => r.split(","));
-  const header = rows[0];
-  const data = rows.slice(1);
-
-  const yearIdx = header.indexOf("year");
-
-  const years = [...new Set(data.map(r => r[yearIdx]))];
-  const select = document.getElementById('yearSelect');
-  years.forEach(y => {
-    const o = document.createElement('option');
-    o.value = o.textContent = y;
-    select.appendChild(o);
-  });
-
-  function updateKPI() {
-    const selectedYear = select.value;
-    const filtered = data.filter(r => r[yearIdx] === selectedYear);
-
-    const indicators = ["water","internet","electricity","computers",
-        "disability_infrastructure","sanitation_facilities",
-        "ss_sanitation_facilities","handwashing_facilities"];
-
-    const container = document.getElementById('kpiContainer');
-    container.innerHTML = "";
-
-    indicators.forEach(ind => {
-      if (!header.includes(ind)) return;
-      const idx = header.indexOf(ind);
-
-      const countTrue = filtered.filter(r => r[idx] === "1").length;
-
-      const card = `
-        <div class="p-4 bg-white shadow rounded-lg">
-          <div class="text-4xl font-bold">${countTrue}</div>
-          <div class="text-gray-600">${ind}</div>
-        </div>`;
-      container.innerHTML += card;
-    });
-  }
-
-  select.addEventListener('change', updateKPI);
-  updateKPI();
+async function loadCSV(url) {
+    const text = await fetch(url).then(r => r.text());
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    const header = rows[0];
+    return rows.slice(1).map(r => Object.fromEntries(header.map((h,i) => [h, r[i]])));
 }
-load();
+
+async function load() {
+
+    console.log("HERE");
+
+    const fileURL = "{{ page.csv }}";
+    console.log(fileURL)
+    const data = await loadCSV(fileURL);
+
+    // UPDATE YEAR SELECTOR
+    const years = [...new Set(
+        data
+          .filter(d => d.year && d.year.trim() !== "")  // drop blank/null
+          .map(d => d.year)
+    )].sort();
+    console.log(years)
+    const yearSelect = document.getElementById("yearSelect");
+
+    years.forEach(y => {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+    });
+
+    let currentYear = years[0];
+    yearSelect.addEventListener("change", e => updateCharts(e.target.value));
+
+    // CALCULATE INDICATORS
+    function updateCharts(year) {
+
+        // const row = data.filter(d => d.year === year);
+        // Remove rows with missing/blank year, then select matching year
+        const row = data
+            .filter(d => d.year && d.year.trim() !== "")   // drops blank year rows
+            .filter(d => d.year === year);
+            // .filter(d => d.internet !== -99);
+            // .filter(d => d.water && d.water.trim() !== -99)
+            // .filter(d => d.elec && d.elec.trim() !== -99);
+
+        // Convert strings → numbers safely + drop nulls
+        const sum = (arr, field) => {
+            const values = arr.map(r => +r[field]);      // convert to numbers raw
+            const valid  = values.filter(n => !isNaN(n))
+                                  .filter(n => n > 0); // keep only real numbers
+
+            // 🔍 Count value categories
+            const count = {
+                total: values.length,
+                valid: valid.length,
+                missing: values.filter(n => isNaN(n)).length,
+                w0: values.filter(n => n === 0).length,
+                w1: values.filter(n => n === 1).length,
+                lt0: values.filter(n => n < 0).length
+            };
+
+            console.log(`📊 Value summary for ${field}:`, count);
+            // console.log("Sample values:", values.slice(0,15), "...");
+
+            return valid.reduce((a,b) => a + b, 0);
+        };
+
+
+
+        // --------- Parse + handle nulls safely ----------
+        const water = sum(row, "water");
+        const internet = sum(row, "internet");
+        const elec = sum(row, "electricity");
+        const di = sum(row, "disability_infrastructure");
+        const sf = sum(row, "sanitation_facilities");
+        const ssf = sum(row, "ss_sanitation_facilities");
+        const hf = sum(row, "handwashing_facilities");
+
+
+			        
+
+        // const totalSchools  = +row.total_schools || null; // CHANGE IF DIFFERENT COLUMN NAME
+        const schoolsInYear = data.filter(d => d.year === year)
+                       // drops blank year rows
+
+        const totalSchools = schoolsInYear.length;
+
+        console.log("water sum: ", water, "internet sum: ", internet, "elec sum: ", elec, "totalSchools: ", totalSchools)
+
+        // --------- KPI VALUES ---------
+        const waterPerc = water / totalSchools// : "—";
+        const intPerc = internet / totalSchools// : "—";
+        const elecPerc = elec / totalSchools// : "—";
+        const diPerc = di / totalSchools// : "—";
+        const sfPerc = sf / totalSchools// : "—";
+        const ssfPerc = ssf / totalSchools// : "—";     
+        const hfPerc = hf / totalSchools// : "—";        
+
+        console.log(waterPerc, intPerc, elecPerc)
+
+        document.getElementById("kpiPercElec").textContent = elecPerc.toFixed(2) * 100 + "%"// + ":1";
+        document.getElementById("kpiPercWater").textContent = waterPerc.toFixed(2) * 100 + "%"// + ":1";
+        document.getElementById("kpiPercInt").textContent = intPerc.toFixed(2) * 100 + "%"// + ":1";
+        document.getElementById("kpiPercDI").textContent = diPerc.toFixed(2) * 100 + "%"// + ":1";
+        document.getElementById("kpiPercSF").textContent = sfPerc.toFixed(2) * 100 + "%"// + ":1";
+        document.getElementById("kpiPercSSF").textContent = ssfPerc.toFixed(2) * 100 + "%"// + ":1";
+        document.getElementById("kpiPercHF").textContent = hfPerc.toFixed(2) * 100 + "%"// + ":1";
+
+        
+        
+        
+        // document.getElementById("numSchools").textContent = totalSchools.toLocaleString();
+
+
+
+
+    }
+
+    updateCharts(currentYear);
+
+}
+
+load()
+
+
+
+// async function load() {
+//   const response = await fetch("{{ page.file }}");
+//   const text = await response.text();
+
+//   const rows = text.split("\n").map(r => r.split(","));
+//   const header = rows[0];
+//   const data = rows.slice(1);
+
+//   const yearIdx = header.indexOf("year");
+
+//   // const years = [...new Set(data.map(r => r[yearIdx]))];
+//     const years = [...new Set(
+//         data
+//           .filter(d => d.year && d.year.trim() !== "")  // drop blank/null
+//           .map(d => d.year)
+//     )].sort();
+
+//   const select = document.getElementById('yearSelect');
+//   years.forEach(y => {
+//     const o = document.createElement('option');
+//     o.value = o.textContent = y;
+//     select.appendChild(o);
+//   });
+
+//   function updateKPI() {
+//     const selectedYear = select.value;
+//     const filtered = data.filter(r => r[yearIdx] === selectedYear);
+
+//     const indicators = ["water","internet","electricity","computers",
+//         "disability_infrastructure","sanitation_facilities",
+//         "ss_sanitation_facilities","handwashing_facilities"];
+
+//     const container = document.getElementById('kpiContainer');
+//     container.innerHTML = "";
+
+//     indicators.forEach(ind => {
+//       if (!header.includes(ind)) return;
+//       const idx = header.indexOf(ind);
+
+//       const countTrue = filtered.filter(r => r[idx] === "1").length;
+
+//       const card = `
+//         <div class="p-4 bg-white shadow rounded-lg">
+//           <div class="text-4xl font-bold">${countTrue}</div>
+//           <div class="text-gray-600">${ind}</div>
+//         </div>`;
+//       container.innerHTML += card;
+//     });
+//   }
+
+//   select.addEventListener('change', updateKPI);
+//   updateKPI();
+// }
+// load();
 </script>
 
 </body>

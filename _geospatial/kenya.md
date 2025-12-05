@@ -6,7 +6,7 @@ csv: "/data/geospatial/ken_geo.csv"
 layout: dataset
 theme: geospatial
 iso: ken
-lat: -35.675147
-lon: -71.542969
-zoom: 3
+lat: 0.6267954423251951
+lon: 37.84957055791947
+zoom: 5
 ---

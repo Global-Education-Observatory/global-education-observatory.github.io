@@ -1,0 +1,101 @@
+body {
+background: #f6f8fa;
+font-family: "Roboto", sans-serif;
+margin: 0;
+padding: 0;
+}
+.container {
+max-width: 1100px;
+margin: auto;
+padding: 80px 20px;
+}
+h1 {
+font-size: 42px;
+font-weight: 800;
+margin-bottom: 10px;
+color: #111;
+}
+.subtitle {
+font-size: 18px;
+color: #6b7280;
+margin-bottom: 50px;
+max-width: 700px;
+}
+.grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 25px;
+}
+.card {
+background: white;
+border-radius: 14px;
+padding: 28px;
+text-decoration: none;
+display: block;
+border: 1px solid #e5e7eb;
+box-shadow: 0px 2px 6px rgba(0,0,0,0.06);
+transition: 0.25s;
+}
+.card:hover {
+transform: translateY(-4px);
+border-color: #3b82f6;
+box-shadow: 0px 6px 14px rgba(0,0,0,0.08);
+}
+.card h2 {
+font-size: 22px;
+font-weight: 700;
+margin-bottom: 8px;
+color: #111;
+}
+.card p {
+color: #4b5563;
+line-height: 1.5;
+font-size: 15px;
+}
+
+/* NAVBAR STYLES */
+.navbar {
+width: 100%;
+background: #ffffff;
+border-bottom: 1px solid #e5e7eb;
+box-shadow: 0px 2px 8px rgba(0,0,0,0.03);
+position: sticky;
+top: 0;
+z-index: 1000;
+}
+
+.nav-container {
+max-width: 1200px;
+margin: auto;
+padding: 14px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.brand {
+font-size: 20px;
+font-weight: 700;
+color: #111;
+text-decoration: none;
+letter-spacing: .5px;
+}
+
+.nav-links a {
+margin-left: 28px;
+font-size: 15px;
+font-weight: 500;
+color: #374151;
+text-decoration: none;
+transition: 0.25s;
+}
+
+.nav-links a:hover {
+color: #3b82f6;
+}
+
+/* Optional — highlight the active page */
+.nav-links a.active {
+color: #3b82f6;
+font-weight: 600;
+}

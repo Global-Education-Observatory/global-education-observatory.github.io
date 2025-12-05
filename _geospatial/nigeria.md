@@ -6,7 +6,7 @@ csv: "/data/geospatial/nig_geo.csv"
 layout: dataset
 theme: geospatial
 iso: nig
-lat: 12.881959
-lon: 121.766541
+lat: 9.58816723136826
+lon: 7.952936373725332
 zoom: 5
 ---

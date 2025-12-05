@@ -6,7 +6,7 @@ csv: "/data/geospatial/lao_geo.csv"
 layout: dataset
 theme: geospatial
 iso: lao
-lat: -35.675147
-lon: -71.542969
-zoom: 3
+lat: 18.493668174013575
+lon: 104.3944046218455
+zoom: 5
 ---

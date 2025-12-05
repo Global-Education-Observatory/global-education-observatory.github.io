@@ -6,7 +6,7 @@ csv: "/data/geospatial/isr_geo.csv"
 layout: dataset
 theme: geospatial
 iso: isr
-lat: -35.675147
-lon: -71.542969
-zoom: 3
+lat: 31.723187749683925
+lon: 35.1743335050607
+zoom: 6
 ---

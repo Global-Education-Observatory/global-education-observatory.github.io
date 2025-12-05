@@ -6,7 +6,7 @@ csv: "/data/geospatial/cri_geo.csv"
 layout: dataset
 theme: geospatial
 iso: cri
-lat: 9.624897
-lon: -84.253307
-zoom: 5
+lat: 9.532717804187245
+lon: -84.09484678118348
+zoom: 7
 ---

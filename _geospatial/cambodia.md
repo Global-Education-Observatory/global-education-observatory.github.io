@@ -5,8 +5,8 @@ file: "/data/geospatial/khm_geo.geojson"
 csv: "/data/geospatial/khm_geo.csv"
 layout: dataset
 theme: geospatial
-iso: kmh
-lat: -35.675147
-lon: -71.542969
-zoom: 3
+iso: khm
+lat: 12.716293078544886
+lon: 105.04755638606376
+zoom: 6
 ---

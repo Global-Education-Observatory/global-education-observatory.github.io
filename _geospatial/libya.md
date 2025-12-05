@@ -6,7 +6,7 @@ csv: "/data/geospatial/lby_geo.csv"
 layout: dataset
 theme: geospatial
 iso: lby
-lat: -35.675147
-lon: -71.542969
-zoom: 3
+lat: 27.009032290351147
+lon: 17.404445722947738
+zoom: 5
 ---

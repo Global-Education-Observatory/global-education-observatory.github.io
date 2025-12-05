@@ -6,7 +6,7 @@ csv: "/data/geospatial/tan_geo.csv"
 layout: dataset
 theme: geospatial
 iso: tan
-lat: 12.881959
-lon: 121.766541
+lat: -6.508008266363352
+lon: 35.06302779675083
 zoom: 5
 ---
