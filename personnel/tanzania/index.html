@@ -9,6 +9,56 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
+
+<style>
+.chart-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 25px;
+}
+
+.chart-container canvas {
+    max-width: 300px;   /* adjust down to 200 or up to 300 if needed */
+    max-height: 300px;
+}
+.kpi-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 25px 0;
+}
+
+.kpi-card {
+    background: white;
+    padding: 18px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    min-width: 180px;
+    transition: 0.25s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.kpi-card h3 {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.kpi-card p {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2f4858;
+}
+
+</style>
+
 <body class="bg-gray-50 text-gray-800">
 
 <div class="max-w-5xl mx-auto py-10">
@@ -47,12 +97,264 @@
     </select>
   </div>
 
-  <!-- Chart -->
-  <canvas id="personnelChart" height="120"></canvas>
+
+<!-- KPI BOXES -->
+<div id="kpiRow" class="kpi-row">
+    <div class="kpi-card">
+        <h3>Teacher-School Ratio</h3>
+        <p id="kpiTeachers">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Student-School Ratio</h3>
+        <p id="kpiStudents">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Student-Teacher Ratio</h3>
+        <p id="kpiRatio">—</p>
+    </div>
+
+    <div class="kpi-card">
+        <h3>Number of Schools with Data</h3>
+        <p id="numSchools">—</p>
+    </div>
+
+</div>
+
+
+<!-- CHART WRAPPER -->
+<div class="flex flex-wrap gap-12 justify-center mt-10">
+
+    <!-- Teachers Chart -->
+    <div class="w-80 text-center">
+        <p class="mt-2 font-medium text-gray-600">Teacher Gender Distribution</p>
+        <canvas id="teacherChart"></canvas>
+    </div>
+
+    <!-- Students Chart -->
+    <div class="w-80 text-center">
+        <p class="mt-2 font-medium text-gray-600">Student Gender Distribution</p>
+        <canvas id="studentChart"></canvas>
+    </div>
+
+</div>
 
 </div>
 
 <script>
+async function loadCSV(url) {
+    const text = await fetch(url).then(r => r.text());
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    const header = rows[0];
+    return rows.slice(1).map(r => Object.fromEntries(header.map((h,i) => [h, r[i]])));
+}
+
+(async () => {
+    const fileURL = "/data/personnel/tan_personnel.csv";
+    const data = await loadCSV(fileURL);
+
+    const years = [...new Set(
+        data
+          .filter(d => d.year && d.year.trim() !== "")  // drop blank/null
+          .map(d => d.year)
+    )].sort();
+    const yearSelect = document.getElementById("yearSelect");
+
+    years.forEach(y => {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = y;
+        yearSelect.appendChild(opt);
+    });
+
+    let currentYear = years[0];
+
+    // Two chart instances
+    const teacherCtx = document.getElementById("teacherChart").getContext("2d");
+    const studentCtx = document.getElementById("studentChart").getContext("2d");
+
+    let teacherChart = null;
+    let studentChart = null;
+
+function updateCharts(year) {
+
+    // const row = data.filter(d => d.year === year);
+    // Remove rows with missing/blank year, then select matching year
+    const row = data
+        .filter(d => d.year && d.year.trim() !== "")   // drops blank year rows
+        .filter(d => d.year === year);
+
+
+
+    // Convert strings → numbers safely + drop nulls
+    const sum = (arr, field) =>
+        arr
+        .map(r => +r[field])       // convert to number
+        .filter(n => !isNaN(n))    // remove null/empty
+        .reduce((a,b) => a+b, 0);  // sum
+
+
+    // --------- Parse + handle nulls safely ----------
+    const mTeach   = sum(row, "total_teacher_male");
+    const fTeach = sum(row, "total_teacher_female");
+    const mStud   = sum(row, "total_student_male");
+    const fStud = sum(row, "total_student_female");
+    const tStud = sum(row, "total_student_enrollment");
+    const tTeach = sum(row, "total_teachers");
+
+    console.log(mTeach, fTeach, mStud, fStud)
+
+  // If gender breakdown missing → use total columns instead
+  const totalTeachers = (mTeach + fTeach) > 0 
+      ? (mTeach + fTeach) 
+      : (tTeach || 0);
+
+  const totalStudents = (mStud + fStud) > 0 
+      ? (mStud + fStud) 
+      : (tStud || 0);
+
+    // const totalSchools  = +row.total_schools || null; // CHANGE IF DIFFERENT COLUMN NAME
+    const schoolsInYear = data.filter(d => d.year === year);
+    const totalSchools = schoolsInYear.length;
+
+    console.log("here", totalTeachers, totalStudents, totalSchools)
+
+    // --------- KPI VALUES ---------
+    const teacherSchoolRatio = totalSchools ? (totalTeachers / totalSchools).toFixed(1) : "—";
+    const studentSchoolRatio = totalSchools ? (totalStudents / totalSchools).toFixed(1) : "—";
+    const studentTeacherRatio = totalTeachers > 0 ? (totalStudents / totalTeachers).toFixed(1) : "—";
+
+    console.log(teacherSchoolRatio, studentSchoolRatio, studentTeacherRatio)
+
+    document.getElementById("kpiTeachers").textContent = teacherSchoolRatio + ":1";
+    document.getElementById("kpiStudents").textContent = studentSchoolRatio + ":1";
+    document.getElementById("kpiRatio").textContent = studentTeacherRatio + ":1";
+    document.getElementById("numSchools").textContent = totalSchools.toLocaleString();
+    
+    // --------- Skip pie charts if gender data missing ----------
+    const hasTeacherGender = mTeach + fTeach > 0;
+    const hasStudentGender = mStud + fStud > 0;
+
+    // Compute % for pies
+    const teacherPct = hasTeacherGender ? [
+        (mTeach / totalTeachers * 100).toFixed(1),
+        (fTeach / totalTeachers * 100).toFixed(1)
+    ] : null;
+
+    const studentPct = hasStudentGender ? [
+        (mStud / totalStudents * 100).toFixed(1),
+        (fStud / totalStudents * 100).toFixed(1)
+    ] : null;
+
+  console.log(teacherPct)
+
+// ----- TEACHER CHART -----
+if (hasTeacherGender) {
+    document.getElementById("teacherChart").parentElement.style.display = "block";
+
+    if (!teacherChart) {
+        teacherChart = new Chart(teacherCtx, {
+            type: "pie",
+            data: {
+                labels: ["Male Teachers", "Female Teachers"],
+                datasets: [{ 
+                    data: teacherPct,
+                    backgroundColor: ["#4A90E2", "#FF6FB5"]
+                }]
+            },
+            options: {
+                      responsive: true,
+                      plugins: {
+                          tooltip: {
+                              callbacks: {
+                                  label: function(context) {
+                                      const label = context.label || "";
+                                      const value = context.parsed;
+                                      return `${label}: ${value}%`;   // <-- adds percent symbol
+                                  }
+                              }
+                          }
+                      }
+                  }
+        });
+    } else {
+        teacherChart.data.datasets[0].data = teacherPct;
+        teacherChart.update();
+    }
+
+} else {
+    document.getElementById("teacherChart").parentElement.style.display = "none";
+}
+
+
+// ----- STUDENT CHART -----
+if (hasStudentGender) {
+    document.getElementById("studentChart").parentElement.style.display = "block";
+
+    if (!studentChart) {
+        studentChart = new Chart(studentCtx, {
+            type: "pie",
+            data: {
+                labels: ["Male Students", "Female Students"],
+                datasets: [{ 
+                    data: studentPct,
+                    backgroundColor: ["#4A90E2", "#FF6FB5"]
+                }]
+            },
+            options: {
+                      responsive: true,
+                      plugins: {
+                          tooltip: {
+                              callbacks: {
+                                  label: function(context) {
+                                      const label = context.label || "";
+                                      const value = context.parsed;
+                                      return `${label}: ${value}%`;   // <-- adds percent symbol
+                                  }
+                              }
+                          }
+                      }
+                  }
+        });
+    } else {
+        studentChart.data.datasets[0].data = studentPct;
+        studentChart.update();
+    }
+
+} else {
+    document.getElementById("studentChart").parentElement.style.display = "none";
+}
+
+
+
+
+
+
+}
+
+
+
+
+    updateCharts(currentYear);
+
+    yearSelect.addEventListener("change", e => updateCharts(e.target.value));
+    
+})();
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+<!-- <script>
 async function loadCSV(url) {
     const text = await fetch(url).then(r => r.text());
     const rows = text.trim().split("\n").map(r => r.split(","));
@@ -132,7 +434,7 @@ async function loadCSV(url) {
     });
 
 })();
-</script>
+</script> -->
 
 </body>
 </html>
