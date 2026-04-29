@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEDEx — Global Education Data Exchange · GEO</title>
+  <meta name="description" content="Regional EMIS data collection and deep learning indicator estimation in collaboration with partners in the Philippines, Cambodia, and Nigeria.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+
+    .project-hero {
+      background: var(--charcoal);
+      padding: 72px 32px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-hero__grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,77,69,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,77,69,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .project-hero__glow {
+      position: absolute;
+      top: -80px; right: -60px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,77,69,0.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .project-hero__inner {
+      position: relative;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .project-hero__breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: rgba(255,255,255,0.4);
+      margin-bottom: 28px; font-family: var(--font-mono);
+    }
+    .project-hero__breadcrumb a { color: rgba(255,255,255,0.4); transition: var(--transition); }
+    .project-hero__breadcrumb a:hover { color: rgba(0,168,150,1); }
+    .project-hero__breadcrumb span { color: rgba(255,255,255,0.2); }
+
+    .project-hero__name {
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(0,168,150,1);
+      margin-bottom: 16px; display: block;
+    }
+
+    .project-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white); font-weight: 400; line-height: 1.2; margin-bottom: 18px;
+    }
+
+    .project-hero__title em { font-style: italic; color: rgba(0,168,150,1); }
+
+    .project-hero__desc {
+      font-size: 16.5px; color: rgba(255,255,255,0.58);
+      line-height: 1.75; max-width: 640px; margin-bottom: 32px;
+    }
+
+    .content-section { padding: 72px 32px; }
+    .content-section--alt { background: var(--off-white); }
+    .content-section__inner { max-width: 1180px; margin: 0 auto; }
+
+    /* Partner region cards */
+    .partner-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .partner-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .partner-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: var(--border);
+    }
+
+    .partner-card__flag {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      background: var(--off-white);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .partner-card__body { padding: 22px 22px 24px; }
+
+    .partner-card__country {
+      font-size: 16px; font-weight: 600; color: var(--charcoal);
+      margin-bottom: 4px;
+    }
+
+    .partner-card__partner {
+      font-size: 12.5px; color: var(--teal);
+      font-weight: 500; margin-bottom: 12px;
+    }
+
+    .partner-card__desc {
+      font-size: 13.5px; color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* Two-column layout for project structure */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .pillar {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+
+    .pillar__num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      color: var(--teal-wash);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .pillar__title { font-size: 16px; font-weight: 600; color: var(--charcoal); margin-bottom: 10px; }
+    .pillar__desc { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+
+    @media (max-width: 768px) {
+      .partner-grid { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="/geo/" class="site-nav__brand">
+        <div class="site-nav__brand-mark">G</div>
+        <div>
+          <span class="site-nav__brand-text">GEO</span>
+          <span class="site-nav__brand-sub">Global Education Observatory</span>
+        </div>
+      </a>
+      <ul class="site-nav__links">
+        <li><a href="/geo/oedc/">OEDC</a></li>
+        <li><a href="/geo/torchsdg4/">TorchSDG4</a></li>
+        <li><a href="/geo/gedex/" class="active">GEDEx</a></li>
+        <li><a href="https://heatherbaier.github.io" target="_blank">← heatherbaier.github.io</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero__grid"></div>
+    <div class="project-hero__glow"></div>
+    <div class="project-hero__inner">
+      <div class="project-hero__breadcrumb animate-fade-in">
+        <a href="/geo/">GEO</a>
+        <span>/</span>
+        <span style="color:rgba(255,255,255,0.65);">GEDEx</span>
+      </div>
+      <span class="project-hero__name animate-fade-up">GEDEx</span>
+      <h1 class="project-hero__title animate-fade-up delay-1">
+        Global Education<br><em>Data Exchange</em>
+      </h1>
+      <p class="project-hero__desc animate-fade-up delay-2">
+        Regional EMIS data collection and deep learning indicator estimation in active collaboration with government and civil society partners in the Philippines, Cambodia, and Nigeria — extending school-level data coverage to contexts where existing systems fall short.
+      </p>
+      <div class="animate-fade-up delay-3">
+        <span class="badge badge--soon">Coming Soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner regions -->
+  <section class="content-section content-section--alt">
+    <div class="content-section__inner">
+      <p class="section-label">Partner Regions</p>
+      <h2 style="font-size:1.6rem; margin-bottom:12px;">Three regional programs</h2>
+      <p style="color:var(--text-secondary); font-size:15px; margin-bottom:36px; max-width:580px;">Each regional program involves direct collaboration with national and sub-national education partners on data collection, validation, and capacity building.</p>
+      <div class="partner-grid">
+        <div class="partner-card animate-fade-up delay-1">
+          <div class="partner-card__flag">🇵🇭</div>
+          <div class="partner-card__body">
+            <div class="partner-card__country">Philippines</div>
+            <div class="partner-card__partner">In collaboration with DepEd & ANSA-EAP</div>
+            <p class="partner-card__desc">School-level EMIS data from the Department of Education's BEIS system, with a focus on equity, WASH, and learning outcomes in Mindanao and the Bangsamoro region.</p>
+          </div>
+        </div>
+        <div class="partner-card animate-fade-up delay-2">
+          <div class="partner-card__flag">🇰🇭</div>
+          <div class="partner-card__body">
+            <div class="partner-card__country">Cambodia</div>
+            <div class="partner-card__partner">In collaboration with MoEYS & regional partners</div>
+            <p class="partner-card__desc">Sub-national EMIS data collection with a focus on school infrastructure, teacher deployment, and enrollment across rural and peri-urban areas.</p>
+          </div>
+        </div>
+        <div class="partner-card animate-fade-up delay-3">
+          <div class="partner-card__flag">🇳🇬</div>
+          <div class="partner-card__body">
+            <div class="partner-card__country">Nigeria</div>
+            <div class="partner-card__partner">In collaboration with state-level MoEs</div>
+            <p class="partner-card__desc">State-level school census data focusing on out-of-school children, gender parity, and resource gaps — complementing national EMIS which has significant coverage limitations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project structure -->
+  <section class="content-section">
+    <div class="content-section__inner">
+      <p class="section-label">Project Structure</p>
+      <h2 style="font-size:1.6rem; margin-bottom:36px;">Two integrated components</h2>
+      <div class="two-col">
+        <div class="pillar animate-fade-up delay-1">
+          <div class="pillar__num">01</div>
+          <div class="pillar__title">Regional EMIS Data Collection</div>
+          <p class="pillar__desc">Direct partnership with national and sub-national education ministries and civil society organizations to collect, validate, and geocode school-level administrative census data beyond what is publicly available — filling gaps in the OEDC dataset and enabling longitudinal analysis.</p>
+        </div>
+        <div class="pillar animate-fade-up delay-2">
+          <div class="pillar__num">02</div>
+          <div class="pillar__title">Deep Learning Indicator Estimation</div>
+          <p class="pillar__desc">Deep learning models trained on GEDEx partner data to estimate missing EMIS indicators — enrollment, resources, outcomes — in data-sparse schools and regions. Models use satellite imagery, spatial context, and auxiliary signals to generalize beyond the training regions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Funding -->
+  <section class="content-section content-section--alt">
+    <div class="content-section__inner">
+      <p class="section-label">Funding</p>
+      <h2 style="font-size:1.6rem; margin-bottom:16px;">Supported by</h2>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <div style="background:var(--white); border:1.5px solid var(--border-light); border-radius:var(--radius); padding:18px 24px; display:flex; align-items:center; gap:14px;">
+          <div style="font-size:1.6rem;">🏛️</div>
+          <div>
+            <div style="font-weight:600; font-size:14px; color:var(--charcoal);">Spencer Foundation</div>
+            <div style="font-size:12.5px; color:var(--text-muted);">Research Practice Partnership Grant</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>
+        <div class="site-footer__brand">GEO · GEDEx</div>
+        <div class="site-footer__meta" style="margin-top:6px;">Global Education Observatory · Arizona State University</div>
+      </div>
+      <ul class="site-footer__links">
+        <li><a href="/geo/">← GEO Home</a></li>
+        <li><a href="/geo/oedc/">OEDC</a></li>
+        <li><a href="/geo/torchsdg4/">TorchSDG4</a></li>
+        <li><a href="https://heatherbaier.github.io">Personal Site</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

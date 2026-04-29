@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TorchSDG4 — High-Resolution SDG4 Mapping · GEO</title>
+  <meta name="description" content="Deep learning models for mapping SDG4 sub-indicators at high spatial resolution using satellite imagery.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+
+    .project-hero {
+      background: var(--charcoal);
+      padding: 72px 32px 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-hero__grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(224,123,84,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224,123,84,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .project-hero__glow {
+      position: absolute;
+      top: -80px; right: -60px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(224,123,84,0.10) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .project-hero__inner {
+      position: relative;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .project-hero__breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: rgba(255,255,255,0.4);
+      margin-bottom: 28px; font-family: var(--font-mono);
+    }
+    .project-hero__breadcrumb a { color: rgba(255,255,255,0.4); transition: var(--transition); }
+    .project-hero__breadcrumb a:hover { color: var(--terra); }
+    .project-hero__breadcrumb span { color: rgba(255,255,255,0.2); }
+
+    .project-hero__name {
+      font-family: var(--font-mono); font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--terra);
+      margin-bottom: 16px; display: block;
+    }
+
+    .project-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white); font-weight: 400; line-height: 1.2; margin-bottom: 18px;
+    }
+
+    .project-hero__title em { font-style: italic; color: var(--terra); }
+
+    .project-hero__desc {
+      font-size: 16.5px; color: rgba(255,255,255,0.58);
+      line-height: 1.75; max-width: 640px; margin-bottom: 32px;
+    }
+
+    /* Coming soon state */
+    .coming-soon-hero {
+      background: var(--off-white);
+      padding: 80px 32px;
+    }
+
+    .coming-soon-hero__inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .coming-soon-hero__icon {
+      font-size: 4rem;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .coming-soon-hero__title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+
+    .coming-soon-hero__desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    /* Feature preview cards */
+    .feature-grid {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+    }
+
+    .feature-card__icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .feature-card__title { font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 8px; }
+    .feature-card__desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+
+    .content-section { padding: 72px 32px; }
+    .content-section--alt { background: var(--off-white); }
+    .content-section__inner { max-width: 1180px; margin: 0 auto; }
+
+    @media (max-width: 768px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="/geo/" class="site-nav__brand">
+        <div class="site-nav__brand-mark">G</div>
+        <div>
+          <span class="site-nav__brand-text">GEO</span>
+          <span class="site-nav__brand-sub">Global Education Observatory</span>
+        </div>
+      </a>
+      <ul class="site-nav__links">
+        <li><a href="/geo/oedc/">OEDC</a></li>
+        <li><a href="/geo/torchsdg4/" class="active">TorchSDG4</a></li>
+        <li><a href="/geo/gedex/">GEDEx</a></li>
+        <li><a href="https://heatherbaier.github.io" target="_blank">← heatherbaier.github.io</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero__grid"></div>
+    <div class="project-hero__glow"></div>
+    <div class="project-hero__inner">
+      <div class="project-hero__breadcrumb animate-fade-in">
+        <a href="/geo/">GEO</a>
+        <span>/</span>
+        <span style="color:rgba(255,255,255,0.65);">TorchSDG4</span>
+      </div>
+      <span class="project-hero__name animate-fade-up">TorchSDG4</span>
+      <h1 class="project-hero__title animate-fade-up delay-1">
+        High-resolution mapping of<br><em>SDG4 sub-indicators</em>
+      </h1>
+      <p class="project-hero__desc animate-fade-up delay-2">
+        Deep learning models for estimating SDG4 sub-indicators at high spatial resolution from satellite imagery — enabling education outcome estimation in regions where EMIS data is sparse, delayed, or unreliable.
+      </p>
+      <div class="animate-fade-up delay-3">
+        <span class="badge badge--soon">Coming Soon</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- What this project does -->
+  <section class="content-section content-section--alt">
+    <div class="content-section__inner">
+      <p class="section-label" style="margin-bottom:12px;">About</p>
+      <h2 style="font-size:1.6rem; margin-bottom:12px;">What TorchSDG4 does</h2>
+      <p style="color:var(--text-secondary); font-size:15.5px; line-height:1.8; max-width:700px; margin-bottom:48px;">
+        TorchSDG4 trains deep learning models on freely available satellite imagery to estimate SDG Indicator 4 sub-indicators — including school access, enrollment rates, and learning outcomes — at sub-kilometer resolution globally. Models and weights will be released open-source.
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card animate-fade-up delay-1">
+          <div class="feature-card__icon">🛰️</div>
+          <div class="feature-card__title">Satellite-native inputs</div>
+          <p class="feature-card__desc">Models trained on Sentinel-2, Landsat 8/9, and Sentinel-1 SAR composites — no field survey data required at inference time.</p>
+        </div>
+        <div class="feature-card animate-fade-up delay-2">
+          <div class="feature-card__icon">📐</div>
+          <div class="feature-card__title">Sub-kilometer resolution</div>
+          <p class="feature-card__desc">Estimates produced at 100m–1km spatial resolution, suitable for school catchment area analysis and within-country inequality mapping.</p>
+        </div>
+        <div class="feature-card animate-fade-up delay-3">
+          <div class="feature-card__icon">🔓</div>
+          <div class="feature-card__title">Fully open</div>
+          <p class="feature-card__desc">All model weights, training code, and inference pipelines released on GitHub under MIT license. Designed to be run in Google Earth Engine or locally.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SDG4 targets preview -->
+  <section class="content-section">
+    <div class="content-section__inner">
+      <p class="section-label">SDG4 Targets</p>
+      <h2 style="font-size:1.6rem; margin-bottom:12px;">Indicators in scope</h2>
+      <p style="color:var(--text-secondary); font-size:15px; margin-bottom:32px;">The following SDG4 sub-indicators are planned for the first model release.</p>
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:14px;">
+        ${[
+          ["4.1.1", "Minimum proficiency in reading & mathematics (Grades 2/3 and end of primary)"],
+          ["4.1.2", "Completion rate (primary, lower secondary, upper secondary)"],
+          ["4.2.2", "Participation rate in organized learning one year before primary"],
+          ["4.5.1", "Parity indices for all education indicators (sex, location, wealth)"],
+          ["4.a.1", "Schools with access to electricity, internet, water, and sanitation"],
+        ].map(([code, desc]) => `
+          <div style="background:var(--off-white); border:1.5px solid var(--border-light); border-radius:var(--radius); padding:16px 18px;">
+            <div style="font-family:var(--font-mono); font-size:11.5px; color:var(--terra); margin-bottom:6px; font-weight:500;">${code}</div>
+            <div style="font-size:13.5px; color:var(--text-secondary); line-height:1.6;">${desc}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>
+        <div class="site-footer__brand">GEO · TorchSDG4</div>
+        <div class="site-footer__meta" style="margin-top:6px;">Global Education Observatory · Arizona State University</div>
+      </div>
+      <ul class="site-footer__links">
+        <li><a href="/geo/">← GEO Home</a></li>
+        <li><a href="/geo/oedc/">OEDC</a></li>
+        <li><a href="/geo/gedex/">GEDEx</a></li>
+        <li><a href="https://heatherbaier.github.io">Personal Site</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
