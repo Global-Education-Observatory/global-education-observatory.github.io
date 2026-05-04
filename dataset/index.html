@@ -739,6 +739,16 @@ Harvard Dataverse. https://doi.org/10.xxxx/DVN/xxxxxx</pre>
     document.getElementById('country-count').textContent  =
       `${countries.length} ${countries.length === 1 ? 'country' : 'countries'} available`;
 
+    // Auto-update total school count from live API data
+    const totalSchools = countries.reduce((sum, c) => sum + (c.school_count || 0), 0);
+    if (totalSchools > 0) {
+        const formatted = totalSchools >= 1000 
+            ? (totalSchools / 1000).toFixed(0) + 'k+'
+            : totalSchools.toString();
+        const el = document.getElementById('stat-schools');
+        if (el) el.textContent = formatted;
+    }
+
     // Add map layers + build table rows
     let tableHtml = "";
     countries.forEach(c => {
