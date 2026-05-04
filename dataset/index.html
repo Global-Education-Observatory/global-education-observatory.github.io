@@ -422,7 +422,7 @@
             <div class="page-hero__stat-lbl">data dimensions</div>
           </div>
           <div class="page-hero__stat">
-            <div class="page-hero__stat-val">80k+</div>
+            <div class="page-hero__stat-val" id="stat-schools">80k+</div>
             <div class="page-hero__stat-lbl">schools</div>
           </div>
           <div class="page-hero__stat">
@@ -748,6 +748,8 @@ Harvard Dataverse. https://doi.org/10.xxxx/DVN/xxxxxx</pre>
         const el = document.getElementById('stat-schools');
         if (el) el.textContent = formatted;
     }
+
+    console.log("Total Schools: ", totalSchools)
 
     // Add map layers + build table rows
     let tableHtml = "";
