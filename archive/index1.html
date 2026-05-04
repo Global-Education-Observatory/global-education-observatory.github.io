@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEO Dataset — Global Education Observatory</title>
+  <meta name="description" content="A harmonized, geocoded, school-level administrative census dataset spanning personnel, resources, and outcomes across low- and middle-income countries.">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Shared styles -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+
+    /* ── Page hero ─────────────────────────────────────────────── */
+    .page-hero {
+      background: var(--charcoal);
+      padding: 64px 32px 56px;
+      position: relative; overflow: hidden;
+    }
+
+    .page-hero__grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,137,123,0.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,137,123,0.055) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    .page-hero__glow {
+      position: absolute; top: -100px; right: -60px;
+      width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(0,137,123,0.13) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .page-hero__inner {
+      position: relative; max-width: 1180px; margin: 0 auto;
+    }
+
+    .page-hero__breadcrumb {
+      display: flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 12.5px;
+      color: rgba(255,255,255,0.38); margin-bottom: 28px;
+    }
+    .page-hero__breadcrumb a { color: rgba(255,255,255,0.38); transition: var(--transition); }
+    .page-hero__breadcrumb a:hover { color: var(--teal-light); }
+    .page-hero__breadcrumb span { color: rgba(255,255,255,0.18); }
+
+    .page-hero__top {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start; gap: 48px;
+    }
+
+    .page-hero__kicker {
+      font-family: var(--font-mono); font-size: 11.5px;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--teal-light); margin-bottom: 14px;
+    }
+
+    .page-hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white); font-weight: 400;
+      line-height: 1.18; margin-bottom: 18px;
+    }
+
+    .page-hero__title em { font-style: italic; color: var(--teal-light); }
+
+    .page-hero__desc {
+      font-size: 16px; color: rgba(255,255,255,0.56);
+      line-height: 1.78; max-width: 600px; margin-bottom: 30px;
+    }
+
+    .page-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .page-hero__stats {
+      display: flex; flex-direction: column; gap: 0;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      overflow: hidden; flex-shrink: 0;
+      align-self: start;
+    }
+
+    .page-hero__stat {
+      padding: 20px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-hero__stat:last-child { border-bottom: none; }
+
+    .page-hero__stat-val {
+      font-family: var(--font-display);
+      font-size: 2rem; color: var(--white);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .page-hero__stat-val.teal { color: var(--teal-light); }
+
+    .page-hero__stat-lbl {
+      font-size: 11.5px; color: rgba(255,255,255,0.36);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Map section ───────────────────────────────────────────── */
+    .map-section {
+      background: var(--charcoal);
+      padding: 0 32px 72px;
+    }
+
+    .map-section__inner {
+      max-width: 1180px; margin: 0 auto;
+    }
+
+    .map-section__label {
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--teal-light); margin-bottom: 14px;
+      padding-top: 8px;
+    }
+
+    .map-section__header {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 16px;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+
+    .map-section__title {
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--white);
+    }
+
+    .map-section__meta {
+      display: flex; align-items: center; gap: 16px;
+    }
+
+    .map-legend {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: rgba(255,255,255,0.45);
+    }
+
+    .map-legend__dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .map-legend__dot--available { background: var(--teal); }
+
+    #country-count {
+      font-family: var(--font-mono); font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* ── The map itself ────────────────────────────────────────── */
+    #geo-map {
+      width: 100%;
+      height: 460px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: #0e1a24;
+      position: relative;
+    }
+
+    /* Leaflet overrides to match dark theme */
+    .leaflet-container { background: #0e1a24 !important; }
+
+    .leaflet-control-zoom a {
+      background: var(--charcoal-light) !important;
+      color: rgba(255,255,255,0.7) !important;
+      border-color: rgba(255,255,255,0.12) !important;
+    }
+
+    .leaflet-control-zoom a:hover {
+      background: var(--charcoal-mid) !important;
+      color: white !important;
+    }
+
+    .leaflet-control-attribution {
+      background: rgba(28,43,58,0.85) !important;
+      color: rgba(255,255,255,0.3) !important;
+      font-size: 10px !important;
+    }
+
+    .leaflet-control-attribution a { color: var(--teal-light) !important; }
+
+    /* Custom popup */
+    .leaflet-popup-content-wrapper {
+      background: var(--charcoal-light) !important;
+      border: 1px solid rgba(255,255,255,0.10) !important;
+      border-radius: var(--radius) !important;
+      box-shadow: var(--shadow-lg) !important;
+      color: var(--white) !important;
+    }
+
+    .leaflet-popup-tip { background: var(--charcoal-light) !important; }
+
+    .map-popup { padding: 4px 2px; }
+    .map-popup__country { font-weight: 600; font-size: 14px; color: var(--white); margin-bottom: 6px; }
+    .map-popup__iso { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
+    .map-popup__dims { display: flex; gap: 5px; margin-bottom: 12px; }
+    .map-popup__dim {
+      font-size: 10.5px; padding: 2px 7px;
+      border-radius: 10px; font-weight: 500;
+      background: rgba(0,137,123,0.18);
+      color: var(--teal-light);
+      border: 1px solid rgba(0,137,123,0.25);
+    }
+    .map-popup__link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12.5px; font-weight: 500;
+      color: var(--teal-light);
+      transition: var(--transition);
+    }
+    .map-popup__link:hover { color: white; }
+    .map-popup__link svg { width: 12px; height: 12px; }
+
+    /* Loading overlay */
+    #map-loading {
+      position: absolute; inset: 0;
+      background: #0e1a24;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 14px; z-index: 500;
+      border-radius: var(--radius-lg);
+      transition: opacity 0.4s ease;
+    }
+
+    #map-loading.hidden { opacity: 0; pointer-events: none; }
+
+    .map-spinner {
+      width: 32px; height: 32px;
+      border: 2px solid rgba(0,137,123,0.2);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .map-loading-text {
+      font-family: var(--font-mono); font-size: 12px;
+      color: rgba(255,255,255,0.35); letter-spacing: 0.06em;
+    }
+
+    /* ── Dimensions ────────────────────────────────────────────── */
+    .content-section { padding: 72px 32px; }
+    .content-section--alt { background: var(--off-white); }
+    .content-section__inner { max-width: 1180px; margin: 0 auto; }
+
+    .dim-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 18px;
+    }
+
+    .dim-card {
+      background: var(--white);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      transition: var(--transition);
+    }
+
+    .dim-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: var(--border); }
+
+    .dim-card__icon { font-size: 1.6rem; margin-bottom: 14px; }
+    .dim-card__title { font-size: 15px; font-weight: 600; color: var(--charcoal); margin-bottom: 5px; }
+    .dim-card__file { font-family: var(--font-mono); font-size: 11.5px; color: var(--teal); margin-bottom: 10px; }
+    .dim-card__desc { font-size: 13px; color: var(--text-secondary); line-height: 1.62; }
+
+    /* ── Download table ────────────────────────────────────────── */
+    .dl-wrap {
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--border-light);
+      overflow: hidden;
+    }
+
+    table.dl-table {
+      width: 100%; border-collapse: collapse; font-size: 14px;
+    }
+
+    .dl-table thead tr { background: var(--charcoal); }
+    .dl-table th {
+      padding: 12px 16px; font-weight: 500;
+      font-size: 12px; letter-spacing: 0.03em;
+      color: rgba(255,255,255,0.8); text-align: left;
+    }
+
+    .dl-table tbody tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: var(--transition);
+    }
+    .dl-table tbody tr:last-child { border-bottom: none; }
+    .dl-table tbody tr:hover { background: var(--teal-wash); }
+
+    .dl-table td { padding: 12px 16px; vertical-align: middle; }
+    .dl-table td:first-child { font-weight: 500; color: var(--charcoal); }
+
+    .dim-pip { width: 9px; height: 9px; border-radius: 2px; display: inline-block; margin-right: 3px; }
+    .dim-pip--on  { background: var(--teal); }
+    .dim-pip--off { background: var(--border); }
+
+    .dl-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500; color: var(--teal);
+      padding: 5px 11px;
+      border: 1.5px solid rgba(0,137,123,0.22);
+      border-radius: var(--radius-sm);
+      background: var(--teal-wash);
+      transition: var(--transition);
+    }
+    .dl-btn:hover { background: var(--teal); color: white; border-color: var(--teal); }
+    .dl-btn svg { width: 12px; height: 12px; }
+
+    /* ── Citation ──────────────────────────────────────────────── */
+    .citation-block {
+      background: var(--charcoal);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+    }
+
+    .citation-block pre {
+      font-family: var(--font-mono); font-size: 13px;
+      color: rgba(255,255,255,0.62); line-height: 1.8;
+      white-space: pre-wrap; word-break: break-word;
+      margin: 0;
+    }
+
+    .citation-block pre em { font-style: italic; color: rgba(255,255,255,0.82); }
+
+    /* ── Schema note ───────────────────────────────────────────── */
+    .schema-note {
+      background: var(--teal-wash);
+      border: 1.5px solid rgba(0,137,123,0.20);
+      border-left: 4px solid var(--teal);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-size: 14px; color: var(--teal-muted);
+      line-height: 1.7; margin-bottom: 36px;
+    }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .dim-grid { grid-template-columns: repeat(2,1fr); }
+      .page-hero__top { grid-template-columns: 1fr; }
+      .page-hero__stats { flex-direction: row; }
+    }
+
+    @media (max-width: 768px) {
+      .dim-grid { grid-template-columns: 1fr; }
+      #geo-map { height: 320px; }
+      .map-section { padding: 0 20px 56px; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────────── -->
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <a href="/" class="site-nav__brand">
+        <div class="site-nav__brand-mark">G</div>
+        <div>
+          <span class="site-nav__brand-text">GEO</span>
+          <span class="site-nav__brand-sub">Global Education Observatory</span>
+        </div>
+      </a>
+      <ul class="site-nav__links">
+        <li><a href="/dataset/" data-nav="dataset" class="active">GEO Dataset</a></li>
+        <li><a href="/torchsdg4/" data-nav="torchsdg4">TorchSDG4</a></li>
+        <li><a href="/gedex/" data-nav="gedex">GEDEx</a></li>
+        <li><div class="nav-divider"></div></li>
+        <li><a href="https://heatherbaier.github.io" target="_blank" rel="noopener">heatherbaier.github.io ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Page hero ─────────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="page-hero__grid"></div>
+    <div class="page-hero__glow"></div>
+    <div class="page-hero__inner">
+
+      <div class="page-hero__breadcrumb animate-fade-in">
+        <a href="/">GEO</a>
+        <span>/</span>
+        <span style="color:rgba(255,255,255,0.65);">Dataset</span>
+      </div>
+
+      <div class="page-hero__top">
+        <div>
+          <p class="page-hero__kicker animate-fade-up">GEO Dataset</p>
+          <h1 class="page-hero__title animate-fade-up delay-1">
+            A harmonized, geocoded<br><em>school-level database</em>
+          </h1>
+          <p class="page-hero__desc animate-fade-up delay-2">
+            The GEO Dataset provides open, standardized, school-level administrative census data spanning geocoordinates, personnel, infrastructure resources, and educational outcomes across low- and middle-income countries — built for GeoAI, spatial data science, and development research.
+          </p>
+          <div class="page-hero__actions animate-fade-up delay-3">
+            <a href="#download" class="btn btn--primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Download Data
+            </a>
+            <a href="#coverage" class="btn btn--ghost">View Coverage</a>
+            <a href="https://github.com/global-education-observatory" target="_blank" rel="noopener" class="btn btn--ghost">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="page-hero__stats animate-fade-up delay-2">
+          <div class="page-hero__stat">
+            <div class="page-hero__stat-val teal" id="stat-countries">—</div>
+            <div class="page-hero__stat-lbl">countries available</div>
+          </div>
+          <div class="page-hero__stat">
+            <div class="page-hero__stat-val">4</div>
+            <div class="page-hero__stat-lbl">data dimensions</div>
+          </div>
+          <div class="page-hero__stat">
+            <div class="page-hero__stat-val">80k+</div>
+            <div class="page-hero__stat-lbl">schools</div>
+          </div>
+          <div class="page-hero__stat">
+            <div class="page-hero__stat-val">V1</div>
+            <div class="page-hero__stat-lbl">current version</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Map section ───────────────────────────────────────────── -->
+  <section class="map-section" id="coverage">
+    <div class="map-section__inner">
+      <p class="map-section__label">Coverage</p>
+      <div class="map-section__header">
+        <span class="map-section__title">Available countries</span>
+        <div class="map-section__meta">
+          <div class="map-legend">
+            <div class="map-legend__dot map-legend__dot--available"></div>
+            Available — click to explore
+          </div>
+          <span id="country-count"></span>
+        </div>
+      </div>
+
+      <div style="position:relative;">
+        <div id="geo-map"></div>
+        <div id="map-loading">
+          <div class="map-spinner"></div>
+          <span class="map-loading-text">Loading coverage layers...</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Dimensions ────────────────────────────────────────────── -->
+  <section class="content-section">
+    <div class="content-section__inner">
+      <p class="section-label">Dataset Structure</p>
+      <h2 style="font-size:1.55rem; margin-bottom:10px;">Four joinable dimensions</h2>
+      <p style="color:var(--text-secondary); font-size:15px; margin-bottom:32px; max-width:580px;">
+        Every country is structured as four flat CSV files sharing a common
+        <code style="font-family:var(--font-mono); font-size:12.5px; background:var(--off-white); padding:2px 7px; border-radius:4px; border:1px solid var(--border);">oedc_id</code>
+        key. All tables have identical column structure across countries.
+      </p>
+      <div class="dim-grid">
+        <div class="dim-card animate-fade-up delay-1">
+          <div class="dim-card__icon">📍</div>
+          <div class="dim-card__title">Geo</div>
+          <div class="dim-card__file">{ISO3}_geo.csv</div>
+          <p class="dim-card__desc">School identity, geocoordinates with provenance tier, administrative hierarchy (adm0–adm3), GHSL urban/rural classification, and operational status. One row per school — no year column.</p>
+        </div>
+        <div class="dim-card animate-fade-up delay-2">
+          <div class="dim-card__icon">👩‍🏫</div>
+          <div class="dim-card__title">Personnel</div>
+          <div class="dim-card__file">{ISO3}_personnel.csv</div>
+          <p class="dim-card__desc">Enrollment (total and sex-disaggregated), teaching staff counts, qualified teachers, classrooms, and pupil-teacher ratio. Aligned to UIS headcount definitions. One row per school × year.</p>
+        </div>
+        <div class="dim-card animate-fade-up delay-3">
+          <div class="dim-card__icon">🏗️</div>
+          <div class="dim-card__title">Resources</div>
+          <div class="dim-card__file">{ISO3}_resources.csv</div>
+          <p class="dim-card__desc">WASH access (JMP basic tier), electricity, internet connectivity and type, computer lab, library, and permanent building status. All binary. One row per school × year.</p>
+        </div>
+        <div class="dim-card animate-fade-up delay-4">
+          <div class="dim-card__icon">📊</div>
+          <div class="dim-card__title">Outcomes</div>
+          <div class="dim-card__file">{ISO3}_outcomes.csv</div>
+          <p class="dim-card__desc">Promotion, repetition, and dropout rates (UIS reconstructed cohort method), completion rate, and gross intake ratio where available. Expressed as proportions. One row per school × year.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Download ──────────────────────────────────────────────── -->
+  <section class="content-section content-section--alt" id="download">
+    <div class="content-section__inner">
+      <p class="section-label">Download</p>
+      <h2 style="font-size:1.55rem; margin-bottom:10px;">Access the data</h2>
+      <p style="color:var(--text-secondary); font-size:15px; margin-bottom:28px; max-width:580px;">
+        All data is released under CC BY 4.0. Please cite the accompanying data descriptor when using the GEO Dataset in published work.
+      </p>
+
+      <div class="schema-note">
+        <strong>Schema documentation:</strong> Full variable definitions, NA rules, and standards anchors for all four dimensions are available in the
+        <a href="https://github.com/global-education-observatory/geo-dataset/blob/main/schema.md" target="_blank" style="color:var(--teal); font-weight:500;">dataset schema</a>.
+        Per-country harmonization notes documenting source provenance, variable mappings, and known quality issues are in
+        <a href="https://github.com/global-education-observatory/geo-dataset/tree/main/metadata" target="_blank" style="color:var(--teal); font-weight:500;">/metadata/{ISO3}_metadata.md</a>.
+      </div>
+
+      <div class="dl-wrap">
+        <table class="dl-table">
+          <thead>
+            <tr>
+              <th>Country</th>
+              <th>ISO3</th>
+              <th>Schools</th>
+              <th style="min-width:120px;">Dimensions</th>
+              <th>Year(s)</th>
+              <th>Metadata</th>
+              <th>Download</th>
+            </tr>
+          </thead>
+          <tbody id="dl-tbody">
+            <tr>
+              <td colspan="7" style="text-align:center; color:var(--text-muted); padding:32px; font-size:13.5px;">
+                Loading available countries...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:18px; font-size:13px; color:var(--text-muted);">
+        Full dataset bundle and harmonization notes also available on
+        <a href="https://dataverse.harvard.edu" target="_blank" style="color:var(--teal);">Harvard Dataverse</a>
+        upon V1 publication.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Citation ──────────────────────────────────────────────── -->
+  <section class="content-section">
+    <div class="content-section__inner">
+      <p class="section-label">Citation</p>
+      <h2 style="font-size:1.55rem; margin-bottom:20px;">How to cite</h2>
+      <div class="citation-block">
+        <pre>Baier, H. (<span id="cite-year"></span>). <em>The GEO Dataset: A harmonized, geocoded, school-level administrative
+census across low- and middle-income countries.</em> Scientific Data. [In preparation]
+
+Global Education Observatory. (<span id="cite-year-2"></span>). GEO Dataset [Data set].
+Harvard Dataverse. https://doi.org/10.xxxx/DVN/xxxxxx</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div>
+        <div class="site-footer__brand">Global Education Observatory</div>
+        <div class="site-footer__meta">Arizona State University · School of Geographical Sciences & Urban Planning</div>
+      </div>
+      <ul class="site-footer__links">
+        <li><a href="/">← GEO Home</a></li>
+        <li><a href="/torchsdg4/">TorchSDG4</a></li>
+        <li><a href="/gedex/">GEDEx</a></li>
+        <li><a href="https://heatherbaier.github.io">heatherbaier.github.io</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+  <script>
+  // ═══════════════════════════════════════════════════════════════
+  // GEO Dataset Page — fully dynamic from PHP API + GeoServer WMS
+  // ═══════════════════════════════════════════════════════════════
+
+  const API_URL = "https://globaleducationobservatory.org/api/countries.php";
+  const GEO_WMS = "https://globaleducationobservatory.org/geoserver/geo/wms";
+  const DIM_KEYS    = ["geo", "personnel", "resources", "outcomes"];
+  const DIM_LABELS  = ["Geo", "Personnel", "Resources", "Outcomes"];
+
+  // ── Initialise Leaflet ───────────────────────────────────────
+  const map = L.map('geo-map', {
+    center: [10, 15],
+    zoom: 2,
+    zoomControl: true,
+    attributionControl: true,
+    scrollWheelZoom: false,
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 10,
+    minZoom: 1,
+  }).addTo(map);
+
+  // ── Add WMS layer for one country ────────────────────────────
+  function addCountryLayer(c) {
+
+    const layerName = `geo:${c.iso3.toLowerCase()}_adm0`;
+
+    console.log("LAYER NAME: ", layerName)
+
+    L.tileLayer.wms(GEO_WMS, {
+      layers:      layerName,
+      format:      "image/png",
+      transparent: true,
+      version:     "1.1.0",
+      attribution: "Global Education Observatory",
+    }).addTo(map);
+
+    // Click → GetFeatureInfo → popup
+    map.on("click", async (e) => {
+      const point  = map.latLngToContainerPoint(e.latlng);
+      const size   = map.getSize();
+      const bounds = map.getBounds();
+
+      const params = new URLSearchParams({
+        service:       "WMS",
+        version:       "1.1.0",
+        request:       "GetFeatureInfo",
+        layers:        layerName,
+        query_layers:  layerName,
+        info_format:   "application/json",
+        feature_count: 1,
+        x:      Math.round(point.x),
+        y:      Math.round(point.y),
+        width:  size.x,
+        height: size.y,
+        bbox:   `${bounds.getWest()},${bounds.getSouth()},${bounds.getEast()},${bounds.getNorth()}`,
+        srs:    "EPSG:4326",
+      });
+
+      try {
+        const res  = await fetch(`${GEO_WMS}?${params}`);
+        const json = await res.json();
+        if (json.features?.length > 0) showPopup(e.latlng, c);
+      } catch {}
+    });
+
+  }
+
+  // ── Popup ────────────────────────────────────────────────────
+  function showPopup(latlng, c) {
+    const dimsHtml = DIM_KEYS
+      .filter(d => c[d])
+      .map(d => `<span class="map-popup__dim">${d.charAt(0).toUpperCase() + d.slice(1)}</span>`)
+      .join("") || '<span style="font-size:12px;color:rgba(255,255,255,0.35)">No dimensions yet</span>';
+
+    const schoolStr = c.school_count
+      ? `${Number(c.school_count).toLocaleString()} schools`
+      : c.iso3;
+
+    L.popup({ maxWidth: 260 })
+      .setLatLng(latlng)
+      .setContent(`
+        <div class="map-popup">
+          <div class="map-popup__country">${c.flag || "🌍"} ${c.name || c.iso3}</div>
+          <div class="map-popup__iso">${schoolStr}</div>
+          <div class="map-popup__dims">${dimsHtml}</div>
+          <a class="map-popup__link" href="#row-${c.iso3.toLowerCase()}">
+            View in table
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>`)
+      .openOn(map);
+  }
+
+  // ── Download table row ───────────────────────────────────────
+  function buildTableRow(c) {
+    const pips = DIM_KEYS.map((d, i) =>
+      `<span class="dim-pip ${c[d] ? 'dim-pip--on' : 'dim-pip--off'}" title="${DIM_LABELS[i]}"></span>`
+    ).join("");
+
+    const metaLink = `<a href="https://github.com/global-education-observatory/geo-dataset/blob/main/metadata/${c.iso3.toLowerCase()}_metadata.md"
+      target="_blank" style="color:var(--teal); font-size:12px; font-family:var(--font-mono);">
+      ${c.iso3.toLowerCase()}_metadata.md ↗</a>`;
+
+    const dlCell = c.download
+      ? `<a href="${c.download}" class="dl-btn">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+           Download
+         </a>`
+      : `<span style="font-size:12px; color:var(--text-muted); font-family:var(--font-mono);">Pending</span>`;
+
+    return `<tr id="row-${c.iso3.toLowerCase()}">
+      <td>${c.flag || "🌍"} ${c.name || c.iso3}</td>
+      <td style="font-family:var(--font-mono); font-size:12px; color:var(--text-muted);">${c.iso3}</td>
+      <td style="font-family:var(--font-mono); font-size:13px;">${c.school_count ? Number(c.school_count).toLocaleString() : "—"}</td>
+      <td>${pips}</td>
+      <td style="font-size:13px; color:var(--text-secondary);">${c.years || "—"}</td>
+      <td>${metaLink}</td>
+      <td>${dlCell}</td>
+    </tr>`;
+  }
+
+  // ── Main init ────────────────────────────────────────────────
+  async function init() {
+
+    let countries = [];
+
+    try {
+      
+      const res = await fetch(API_URL);
+
+      console.log("RES: ", res)
+
+      countries = await res.json();
+
+      console.log("COUNTRIES: ", countries)
+
+    } catch (err) {
+      console.error("API fetch failed:", err);
+      document.getElementById('map-loading').classList.add('hidden');
+      document.getElementById('dl-tbody').innerHTML =
+        `<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:32px;">
+          Could not load country data. Please try again later.
+        </td></tr>`;
+      return;
+    }
+
+    // Hide loading overlay
+    document.getElementById('map-loading').classList.add('hidden');
+
+    if (countries.length === 0) {
+      document.getElementById('country-count').textContent = "No countries available yet";
+      document.getElementById('dl-tbody').innerHTML =
+        `<tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:32px;">
+          No countries currently available. Check back soon.
+        </td></tr>`;
+      return;
+    }
+
+    // Update stat counter
+    document.getElementById('stat-countries').textContent = countries.length;
+    document.getElementById('country-count').textContent  =
+      `${countries.length} ${countries.length === 1 ? 'country' : 'countries'} available`;
+
+    // Add map layers + build table rows
+    let tableHtml = "";
+    countries.forEach(c => {
+      addCountryLayer(c);
+      tableHtml += buildTableRow(c);
+    });
+
+    document.getElementById('dl-tbody').innerHTML = tableHtml;
+  }
+
+  // Citation years
+  const yr = new Date().getFullYear();
+  document.getElementById('cite-year').textContent   = yr;
+  document.getElementById('cite-year-2').textContent = yr;
+
+  init();
+  </script>
+</body>
+</html>
