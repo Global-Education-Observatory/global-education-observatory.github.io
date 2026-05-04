@@ -687,8 +687,8 @@ Harvard Dataverse. https://doi.org/10.xxxx/DVN/xxxxxx</pre>
       target="_blank" style="color:var(--teal); font-size:12px; font-family:var(--font-mono);">
       ${c.iso3.toLowerCase()}_metadata.md ↗</a>`;
 
-    const dlCell = c.download
-      ? `<a href="${c.download}" class="dl-btn">
+    const dlCell = c.download_url
+      ? `<a href="${c.download_url}" class="dl-btn">
            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
            Download
          </a>`
